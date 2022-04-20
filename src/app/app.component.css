@@ -84,9 +84,14 @@ table {
     display: flex;
     margin: 82px auto 32px;
     padding: 0 16px;
-    max-width: 960px;
+    width: 80%;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
+}
+
+mat-tab-group {
+    width: 100%
 }
 
 svg.material-icons {

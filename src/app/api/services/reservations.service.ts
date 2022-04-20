@@ -279,6 +279,93 @@ export class ReservationsService extends BaseService {
   }
 
   /**
+   * Path part for operation apiReservationsItemIdGet
+   */
+  static readonly ApiReservationsItemIdGetPath = '/api/Reservations/item/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiReservationsItemIdGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiReservationsItemIdGet$Plain$Response(params: {
+    id: number;
+  }): Observable<StrictHttpResponse<Array<ReservationDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsItemIdGetPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'text',
+      accept: 'text/plain'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<ReservationDto>>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `apiReservationsItemIdGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiReservationsItemIdGet$Plain(params: {
+    id: number;
+  }): Observable<Array<ReservationDto>> {
+
+    return this.apiReservationsItemIdGet$Plain$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<ReservationDto>>) => r.body as Array<ReservationDto>)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiReservationsItemIdGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiReservationsItemIdGet$Json$Response(params: {
+    id: number;
+  }): Observable<StrictHttpResponse<Array<ReservationDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsItemIdGetPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'text/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<ReservationDto>>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `apiReservationsItemIdGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiReservationsItemIdGet$Json(params: {
+    id: number;
+  }): Observable<Array<ReservationDto>> {
+
+    return this.apiReservationsItemIdGet$Json$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<ReservationDto>>) => r.body as Array<ReservationDto>)
+    );
+  }
+
+  /**
    * Path part for operation apiReservationsIdGet
    */
   static readonly ApiReservationsIdGetPath = '/api/Reservations/{id}';

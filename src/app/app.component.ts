@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ItemDto, ReservationDto } from './api/models';
-import { ItemsService, ReservationsService } from './api/services'
+import { ItemDto, ReservationDto, User, UserDto } from './api/models';
+import { ItemsService, ReservationsService, UsersService } from './api/services'
 import { FormGroup, FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common'
 
@@ -16,14 +16,20 @@ import { ApiRequestConfiguration } from './api-request-configuration';
 export class AppComponent implements OnInit {
   title = 'reservation-system';
   items: ItemDto[];
+  myItems: ItemDto[];
+  myReservations: ReservationDto[];
+  itemReservations: ReservationDto[];
+  users: UserDto[];
   selectedItem?: ItemDto;
+  reservationItem?: ItemDto;
   newItem: FormGroup;
   userInfo: FormGroup;
   search: FormGroup;
+  newUser: FormGroup;
   selectedDate1: Date | null;
   selectedDate2: Date | null;
 
-  constructor(private itemService: ItemsService, private reservationService: ReservationsService, private apiRequestConfiguration: ApiRequestConfiguration, private datepipe: DatePipe) { }
+  constructor(private itemService: ItemsService, private reservationService: ReservationsService, private userService: UsersService, private apiRequestConfiguration: ApiRequestConfiguration, private datepipe: DatePipe) { }
   ngOnInit(): void {
 
     this.search = new FormGroup({
@@ -38,6 +44,12 @@ export class AppComponent implements OnInit {
       description: new FormControl(''),
       name: new FormControl('')
     });
+    this.newUser = new FormGroup({
+      userName: new FormControl(''),
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
+      password: new FormControl('')
+    })
   }
   getItems(term?: string): void {
     console.log("Searching: " + term);
@@ -46,6 +58,23 @@ export class AppComponent implements OnInit {
     }
     this.itemService.apiItemsQueryGet$Json({ query: term }).subscribe(items => (this.items = items));
   }
+  getMyItems(): void {
+    this.itemService.apiItemsUserUsernameGet$Json({ username: this.userInfo.value.username }).subscribe(items => (this.myItems = items));
+  }
+  getMyReservations(): void {
+    this.reservationService.apiReservationsUserUsernameGet$Json({ username: this.userInfo.value.username }).subscribe(reservations => (this.myReservations = reservations));
+  }
+  getItemReservations(): void {
+    if (this.reservationItem?.id == undefined) {
+      return;
+    }
+
+    this.reservationService.apiReservationsItemIdGet$Json({ id: this.reservationItem?.id }).subscribe(reservations => (this.itemReservations = reservations));
+  }
+  getUsers(): void {
+    this.userService.apiUsersGet$Json().subscribe(users => this.users = users);
+  }
+
   onSubmit({ value, valid }: { value: ItemDto, valid: boolean }) {
     console.log(value, valid);
     value.owner = this.userInfo.value.username;
@@ -53,17 +82,34 @@ export class AppComponent implements OnInit {
       console.log(response);
     });
   }
+  onAddUser({ value, valid }: { value: User, valid: boolean }) {
+    console.log(value, valid);
+    this.userService.apiUsersPost$Json({ body: value }).subscribe((response) => {
+      console.log(response);
+    });
+  }
   onLogin(): void {
     this.apiRequestConfiguration.basic(this.userInfo.value.username, this.userInfo.value.password);
     this.getItems();
+    this.getMyItems();
+    this.getMyReservations();
+    this.getUsers();
   }
   onSearch(): void {
     this.getItems(this.search.value.term);
+    this.selectedItem = undefined;
+    this.reservationItem = undefined;
   }
 
   selectForReserve(id?: number): void {
     this.selectedItem = this.items.find(x => x.id == id);
   }
+  showItemReservations(id?: number): void {
+
+    this.reservationItem = this.items.find(x => x.id == id);
+    this.getItemReservations();
+  }
+
   onReserve(): void {
     let newReservation: ReservationDto = {
       start: this.datepipe.transform(this.selectedDate1, 'yyyy-MM-dd')!,

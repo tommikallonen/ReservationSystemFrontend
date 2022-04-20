@@ -1,14 +1,3 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-
-
 <!-- Toolbar -->
 <div class="toolbar" role="banner">
   <img width="40" alt="Angular Logo"
@@ -31,71 +20,160 @@
 </div>
 
 <div class="content" role="main">
+  <mat-tab-group>
+    <mat-tab label="Hae kohteita">
+      <div>
+        <form [formGroup]="search">
+          <h2>Hae kohteita <input type="text" placeholder="Search" formControlName="term"><button id="refresh"
+              (click)="onSearch()">Hae</button></h2>
+        </form>
+        <table>
+          <tr>
+            <th>Id</th>
+            <th>Nimi</th>
+            <th>Kuvaus</th>
+            <th>Omistaja</th>
+            <th>Näytä varaukset</th>
+            <th>Varaa</th>
+          </tr>
+          <tr *ngFor="let item of items">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.description}}</td>
+            <td>{{item.owner}}</td>
+            <td><button (click)="showItemReservations(item.id)">Näytä</button></td>
+            <td><button (click)="selectForReserve(item.id)">Varaa</button></td>
+          </tr>
+        </table>
+      </div>
+      <div *ngIf="reservationItem">
+        <table>
+          <tr>
+            <th>Id</th>
+            <th>KohdeId</th>
+            <th>Alku</th>
+            <th>Loppu</th>
+          </tr>
+          <tr *ngFor="let reservation of itemReservations">
+            <td>{{reservation.id}}</td>
+            <td>{{reservation.target}}</td>
+            <td>{{reservation.start}}</td>
+            <td>{{reservation.end}}</td>
+          </tr>
+        </table>
+      </div>
+      <div *ngIf="selectedItem">
+        <div class="card-container">
+          <h3>Lisää varaus</h3>
+          <mat-card class="calendar-card">
+            <mat-calendar [(selected)]="selectedDate1"></mat-calendar>
+            <p>Alku: {{selectedDate1}}</p>
+          </mat-card>
 
-  <!-- Highlight Card -->
+          <mat-card class="calendar-card">
+            <mat-calendar [(selected)]="selectedDate2"></mat-calendar>
+            <p>Loppu: {{selectedDate2}}</p>
+          </mat-card>
+        </div>
+        <button id="reserve" (click)="onReserve()" class="button button-primary centered">Varaa</button>
+      </div>
+    </mat-tab>
 
-  <div>
-    <form [formGroup]="search">
-      <h2>Hae kohteita <input type="text" placeholder="Search" formControlName="term"><button id="refresh"
-          (click)="onSearch()">Hae</button></h2>
-    </form>
-    <table>
-      <tr>
-        <th>Id</th>
-        <th>Nimi</th>
-        <th>Kuvaus</th>
-        <th>Omistaja</th>
-        <th>Varaa</th>
-      </tr>
-      <tr *ngFor="let item of items">
-        <td>{{item.id}}</td>
-        <td>{{item.name}}</td>
-        <td>{{item.description}}</td>
-        <td>{{item.owner}}</td>
-        <td><button (click)="selectForReserve(item.id)">Varaa</button></td>
-      </tr>
-    </table>
-  </div>
-  <div *ngIf="selectedItem">
-    <div class="card-container">
-      <h3>Lisää varaus</h3>
-      <mat-card class="calendar-card">
-        <mat-calendar [(selected)]="selectedDate1"></mat-calendar>
-        <p>Alku: {{selectedDate1}}</p>
-      </mat-card>
 
-      <mat-card class="calendar-card">
-        <mat-calendar [(selected)]="selectedDate2"></mat-calendar>
-        <p>Loppu: {{selectedDate2}}</p>
-      </mat-card>
-    </div>
-    <button id="reserve" (click)="onReserve()" class="button button-primary centered">Varaa</button>
-  </div>
-  <div>
-    <h2>Lisää uusi kohde</h2>
-    <form novalidate (ngSubmit)="onSubmit(newItem)" [formGroup]="newItem">
-      <label>
-        <span>Nimi</span>
-        <input type="text" placeholder="Name" formControlName="name">
-      </label>
-      <label>
-        <span>Kuvaus</span>
-        <input type="text" placeholder="Description" formControlName="description">
-      </label>
-      <button type="submit">Send</button>
-    </form>
-  </div>
+    <mat-tab label="Omat">
+      <div>
+        <h1>Kohteet</h1>
+        <table>
+          <tr>
+            <th>Id</th>
+            <th>Nimi</th>
+            <th>Kuvaus</th>
+            <th>Omistaja</th>
+          </tr>
+          <tr *ngFor="let item of myItems">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.description}}</td>
+            <td>{{item.owner}}</td>
+          </tr>
+        </table>
+        <h1>Varaukset</h1>
+        <table>
+          <tr>
+            <th>Id</th>
+            <th>KohdeId</th>
+            <th>Alku</th>
+            <th>Loppu</th>
+          </tr>
+          <tr *ngFor="let reservation of myReservations">
+            <td>{{reservation.id}}</td>
+            <td>{{reservation.target}}</td>
+            <td>{{reservation.start}}</td>
+            <td>{{reservation.end}}</td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h2>Lisää uusi kohde</h2>
+        <form novalidate (ngSubmit)="onSubmit(newItem)" [formGroup]="newItem">
+          <label>
+            <span>Nimi</span>
+            <input type="text" placeholder="Name" formControlName="name">
+          </label>
+          <label>
+            <span>Kuvaus</span>
+            <input type="text" placeholder="Description" formControlName="description">
+          </label>
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </mat-tab>
+    <mat-tab label="Käyttäjät">
+      <div>
+        <h2>Käyttäjät</h2>
+        <table>
+          <tr>
+            <th>Tunnus</th>
+            <th>Etunimi</th>
+            <th>Sukunimi</th>
+            <th>Admin?</th>
+          </tr>
+          <tr *ngFor="let user of users">
+            <td>{{user.userName}}</td>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
+            <td>{{user.isAdmin}}</td>
+          </tr>
+        </table>
+      </div>
+      <div>
+        <h2>Lisää uusi käyttäjä</h2>
+        <form novalidate (ngSubmit)="onAddUser(newUser)" [formGroup]="newUser">
+          <label>
+            <span>Tunnus</span>
+            <input type="text" placeholder="Tunnus" formControlName="userName">
+          </label>
+          <label>
+            <span>Etunimi</span>
+            <input type="text" placeholder="Etunimi" formControlName="firstName">
+          </label>
+          <label>
+            <span>Sukunimi</span>
+            <input type="text" placeholder="Sukunimi" formControlName="lastName">
+          </label>
+          <label>
+            <span>Salasana</span>
+            <input type="password" placeholder="Salasana" formControlName="password">
+          </label>
+          <button type="submit">Send</button>
+        </form>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
 
 
 </div>
-
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 
 

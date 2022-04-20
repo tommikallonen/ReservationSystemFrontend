@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatCardModule } from '@angular/material/card';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatTabsModule } from '@angular/material/tabs';
 import { environment } from '../environments/environment';
 import { ApiModule } from './api/api.module'
 import { ApiInterceptor } from './api-interceptor';
@@ -44,6 +45,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     MatNativeDateModule,
     NgxMaterialTimepickerModule.setLocale('fi-FI'),
     MatCardModule,
+    MatTabsModule,
     ApiModule.forRoot({ rootUrl: 'https://localhost:44358' }),
   ],
   bootstrap: [AppComponent]
