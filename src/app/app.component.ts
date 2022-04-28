@@ -19,15 +19,22 @@ export class AppComponent implements OnInit {
   myItems: ItemDto[];
   myReservations: ReservationDto[];
   itemReservations: ReservationDto[];
+  selectedEditReservation?: ReservationDto;
   users: UserDto[];
+  myUser: UserDto;
   selectedItem?: ItemDto;
+  selectForEditItem?: ItemDto;
   reservationItem?: ItemDto;
   newItem: FormGroup;
+  editItem: FormGroup;
   userInfo: FormGroup;
   search: FormGroup;
   newUser: FormGroup;
+  editUser: FormGroup;
   selectedDate1: Date | null;
   selectedDate2: Date | null;
+  editDate1: Date | null;
+  editDate2: Date | null;
 
   constructor(private itemService: ItemsService, private reservationService: ReservationsService, private userService: UsersService, private apiRequestConfiguration: ApiRequestConfiguration, private datepipe: DatePipe) { }
   ngOnInit(): void {
@@ -44,11 +51,23 @@ export class AppComponent implements OnInit {
       description: new FormControl(''),
       name: new FormControl('')
     });
+
+    this.editItem = new FormGroup({
+      description: new FormControl(this.selectForEditItem?.description),
+      name: new FormControl(this.selectForEditItem?.name)
+    });
     this.newUser = new FormGroup({
       userName: new FormControl(''),
       firstName: new FormControl(''),
       lastName: new FormControl(''),
-      password: new FormControl('')
+      password: new FormControl(''),
+      isAdmin: new FormControl(false)
+    })
+    this.editUser = new FormGroup({
+      userName: new FormControl(''),
+      firstName: new FormControl(''),
+      lastName: new FormControl(''),
+      isAdmin: new FormControl(false)
     })
   }
   getItems(term?: string): void {
@@ -82,6 +101,23 @@ export class AppComponent implements OnInit {
       console.log(response);
     });
   }
+  onEdit() {
+
+    let id = this.selectForEditItem?.id;
+    if (id == undefined) {
+      return;
+    }
+    let editItem: ItemDto = {
+      id: id,
+      owner: this.selectForEditItem?.owner,
+      name: this.editItem.get('name')!.value,
+      description: this.editItem.get('description')!.value,
+    }
+    this.itemService.apiItemsIdPut({ id: id, body: editItem }).subscribe((response) => {
+      console.log(response);
+    });
+    this.selectForEditItem = undefined;
+  }
   onAddUser({ value, valid }: { value: User, valid: boolean }) {
     console.log(value, valid);
     this.userService.apiUsersPost$Json({ body: value }).subscribe((response) => {
@@ -90,10 +126,19 @@ export class AppComponent implements OnInit {
   }
   onLogin(): void {
     this.apiRequestConfiguration.basic(this.userInfo.value.username, this.userInfo.value.password);
-    this.getItems();
-    this.getMyItems();
-    this.getMyReservations();
-    this.getUsers();
+    this.userService.apiUsersUsernameGet({ username: this.userInfo.value.username }).subscribe((response) => {
+      console.log(response);
+      this.myUser = response;
+      this.editUser.setValue({
+        userName: this.myUser.userName,
+        firstName: this.myUser.firstName,
+        lastName: this.myUser.lastName,
+        isAdmin: this.myUser.isAdmin
+      });
+
+      console.log(this.editUser.value);
+    });
+    this.reload();
   }
   onSearch(): void {
     this.getItems(this.search.value.term);
@@ -101,6 +146,14 @@ export class AppComponent implements OnInit {
     this.reservationItem = undefined;
   }
 
+  selectForEdit(id?: number): void {
+    this.selectForEditItem = this.items.find(x => x.id == id);
+    this.editItem.setValue({
+      name: this.selectForEditItem?.name,
+      description: this.selectForEditItem?.description
+    })
+
+  }
   selectForReserve(id?: number): void {
     this.selectedItem = this.items.find(x => x.id == id);
   }
@@ -119,7 +172,67 @@ export class AppComponent implements OnInit {
     }
     this.reservationService.apiReservationsPost$Json({ body: newReservation }).subscribe((response) => {
       console.log(response);
+      this.reload();
     });
+  }
+
+  deleteItem(id?: number): void {
+    if (id == null) {
+      return;
+    }
+    if (confirm("Haluatko varmasti poistaa kohteen ")) {
+      this.itemService.apiItemsIdDelete$Json({ id: id }).subscribe((response) => {
+        console.log(response);
+        this.reload();
+      });
+    }
+  }
+
+  selectReservationForEdit(id?: number): void {
+    this.selectedEditReservation = this.myReservations.find(x => x.id == id);
+    if (this.selectedEditReservation?.start == undefined || this.selectedEditReservation?.end == undefined) {
+      return;
+    }
+    this.editDate1 = new Date(this.selectedEditReservation?.start);
+    this.editDate2 = new Date(this.selectedEditReservation?.end);
+  }
+  onEditReserve() {
+    if (this.selectedEditReservation?.start == undefined || this.selectedEditReservation?.end == undefined || this.selectedEditReservation?.id == undefined) {
+      return;
+    }
+    this.selectedEditReservation.start = this.datepipe.transform(this.editDate1, 'yyyy-MM-dd')!
+    this.selectedEditReservation.end = this.datepipe.transform(this.editDate2, 'yyyy-MM-dd')!
+
+    this.reservationService.apiReservationsIdPut({ id: this.selectedEditReservation.id, body: this.selectedEditReservation }).subscribe((response) => {
+      console.log(response);
+      this.selectedEditReservation = undefined;
+      this.reload();
+    });
+  }
+  deleteReservation(id?: number): void {
+    if (id == null) {
+      return;
+    }
+    if (confirm("Haluatko varmasti poistaa varauksen ")) {
+      this.reservationService.apiReservationsIdDelete$Json({ id: id }).subscribe((response) => {
+        console.log(response);
+        this.reload();
+      });
+    }
+  }
+
+  onEditUser({ value, valid }: { value: UserDto, valid: boolean }) {
+    console.log(value, valid);
+    this.userService.apiUsersUsernamePut$Json({ username: this.myUser.userName, body: value }).subscribe((response) => {
+      console.log(response);
+    });
+  }
+
+  reload(): void {
+    this.getItems();
+    this.getMyItems();
+    this.getMyReservations();
+    this.getUsers();
   }
 
 }

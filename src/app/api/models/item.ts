@@ -7,5 +7,4 @@ export interface Item {
   image?: null | string;
   name: string;
   owner?: User;
-  secretValue?: null | string;
 }

@@ -88,15 +88,32 @@
             <th>Id</th>
             <th>Nimi</th>
             <th>Kuvaus</th>
-            <th>Omistaja</th>
+            <th>Muokkaa</th>
+            <th>Poista</th>
           </tr>
           <tr *ngFor="let item of myItems">
             <td>{{item.id}}</td>
             <td>{{item.name}}</td>
             <td>{{item.description}}</td>
-            <td>{{item.owner}}</td>
+            <td><button (click)="selectForEdit(item.id)">Muokkaa</button></td>
+            <td><button (click)="deleteItem(item.id)">Poista</button></td>
+
           </tr>
         </table>
+        <div *ngIf="selectForEditItem">
+          <h2>Muokkaa</h2>
+          <form novalidate (ngSubmit)="onEdit()" [formGroup]="editItem">
+            <label>
+              <span>Nimi</span>
+              <input type="text" formControlName="name">
+            </label>
+            <label>
+              <span>Kuvaus</span>
+              <input type="text" formControlName="description">
+            </label>
+            <button type="submit">Lähetä</button>
+          </form>
+        </div>
         <h1>Varaukset</h1>
         <table>
           <tr>
@@ -104,15 +121,35 @@
             <th>KohdeId</th>
             <th>Alku</th>
             <th>Loppu</th>
+            <th>Muokkaa</th>
+            <th>Poista</th>
           </tr>
           <tr *ngFor="let reservation of myReservations">
             <td>{{reservation.id}}</td>
             <td>{{reservation.target}}</td>
             <td>{{reservation.start}}</td>
             <td>{{reservation.end}}</td>
+            <td><button (click)="selectReservationForEdit(reservation.id)">Muokkaa</button></td>
+            <td><button (click)="deleteReservation(reservation.id)">Poista</button></td>
           </tr>
         </table>
+        <div *ngIf="selectedEditReservation">
+          <div class="card-container">
+            <h3>Lisää varaus</h3>
+            <mat-card class="calendar-card">
+              <mat-calendar [(selected)]="editDate1"></mat-calendar>
+              <p>Alku: {{editDate1}}</p>
+            </mat-card>
+
+            <mat-card class="calendar-card">
+              <mat-calendar [(selected)]="editDate2"></mat-calendar>
+              <p>Loppu: {{editDate2}}</p>
+            </mat-card>
+          </div>
+          <button id="reserve" (click)="onEditReserve()" class="button button-primary centered">Varaa</button>
+        </div>
       </div>
+
       <div>
         <h2>Lisää uusi kohde</h2>
         <form novalidate (ngSubmit)="onSubmit(newItem)" [formGroup]="newItem">
@@ -129,6 +166,29 @@
       </div>
     </mat-tab>
     <mat-tab label="Käyttäjät">
+      <div>
+        <h2>Omat tiedot</h2>
+
+        <form novalidate (ngSubmit)="onEditUser(editUser)" [formGroup]="editUser">
+          <div>
+            <span>Tunnus</span>
+            <input type="text" placeholder="Tunnus" formControlName="userName">
+          </div>
+          <div>
+            <span>Etunimi</span>
+            <input type="text" placeholder="Etunimi" formControlName="firstName">
+          </div>
+          <div>
+            <span>Sukunimi</span>
+            <input type="text" placeholder="Sukunimi" formControlName="lastName">
+          </div>
+          <div>
+            <span>Admin?</span>
+            <input type="checkbox" formControlName="isAdmin">
+          </div>
+          <button type="submit">Päivitä</button>
+        </form>
+      </div>
       <div>
         <h2>Käyttäjät</h2>
         <table>
@@ -149,23 +209,27 @@
       <div>
         <h2>Lisää uusi käyttäjä</h2>
         <form novalidate (ngSubmit)="onAddUser(newUser)" [formGroup]="newUser">
-          <label>
+          <div>
             <span>Tunnus</span>
             <input type="text" placeholder="Tunnus" formControlName="userName">
-          </label>
-          <label>
+          </div>
+          <div>
             <span>Etunimi</span>
             <input type="text" placeholder="Etunimi" formControlName="firstName">
-          </label>
-          <label>
+          </div>
+          <div>
             <span>Sukunimi</span>
             <input type="text" placeholder="Sukunimi" formControlName="lastName">
-          </label>
-          <label>
+          </div>
+          <div>
             <span>Salasana</span>
             <input type="password" placeholder="Salasana" formControlName="password">
-          </label>
-          <button type="submit">Send</button>
+          </div>
+          <div>
+            <span>Admin?</span>
+            <input type="checkbox" formControlName="isAdmin">
+          </div>
+          <button type="submit">Tallenna</button>
         </form>
       </div>
     </mat-tab>

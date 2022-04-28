@@ -465,7 +465,7 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsIdPut$Response(params: {
     id: number;
-    body?: Reservation
+    body?: ReservationDto
   }): Observable<StrictHttpResponse<void>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsIdPutPath, 'put');
@@ -493,7 +493,7 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsIdPut(params: {
     id: number;
-    body?: Reservation
+    body?: ReservationDto
   }): Observable<void> {
 
     return this.apiReservationsIdPut$Response(params).pipe(

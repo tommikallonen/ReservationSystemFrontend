@@ -364,6 +364,52 @@ export class UsersService extends BaseService {
   }
 
   /**
+   * Path part for operation apiUsersUsernameGet
+   */
+  static readonly ApiUsersUsernameGetPath = '/api/Users/{username}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiUsersUsernameGet()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiUsersUsernameGet$Response(params: {
+    username: string;
+  }): Observable<StrictHttpResponse<UserDto>> {
+
+    const rb = new RequestBuilder(this.rootUrl, UsersService.ApiUsersUsernameGetPath, 'get');
+    if (params) {
+      rb.path('username', params.username, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'application/json'
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<UserDto>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `apiUsersUsernameGet$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiUsersUsernameGet(params: {
+    username: string;
+  }): Observable<UserDto> {
+
+    return this.apiUsersUsernameGet$Response(params).pipe(
+      map((r: StrictHttpResponse<UserDto>) => r.body as UserDto)
+    );
+  }
+
+  /**
    * Path part for operation apiUsersUsernamePut
    */
   static readonly ApiUsersUsernamePutPath = '/api/Users/{username}';
