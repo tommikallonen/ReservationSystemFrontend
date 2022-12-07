@@ -102,21 +102,22 @@ export class AppComponent implements OnInit {
     });
   }
   onEdit() {
-
-    let id = this.selectForEditItem?.id;
-    if (id == undefined) {
-      return;
+    if (this.selectForEditItem) {
+      let id = this.selectForEditItem?.id;
+      if (id == undefined) {
+        return;
+      }
+      let editItem: ItemDto = {
+        id: id,
+        owner: this.selectForEditItem.owner,
+        name: this.editItem.get('name')!.value,
+        description: this.editItem.get('description')!.value,
+      }
+      this.itemService.apiItemsIdPut({ id: id, body: editItem }).subscribe((response) => {
+        console.log(response);
+      });
+      this.selectForEditItem = undefined;
     }
-    let editItem: ItemDto = {
-      id: id,
-      owner: this.selectForEditItem?.owner,
-      name: this.editItem.get('name')!.value,
-      description: this.editItem.get('description')!.value,
-    }
-    this.itemService.apiItemsIdPut({ id: id, body: editItem }).subscribe((response) => {
-      console.log(response);
-    });
-    this.selectForEditItem = undefined;
   }
   onAddUser({ value, valid }: { value: User, valid: boolean }) {
     console.log(value, valid);
@@ -133,7 +134,6 @@ export class AppComponent implements OnInit {
         userName: this.myUser.userName,
         firstName: this.myUser.firstName,
         lastName: this.myUser.lastName,
-        isAdmin: this.myUser.isAdmin
       });
 
       console.log(this.editUser.value);
@@ -165,8 +165,8 @@ export class AppComponent implements OnInit {
 
   onReserve(): void {
     let newReservation: ReservationDto = {
-      start: this.datepipe.transform(this.selectedDate1, 'yyyy-MM-dd')!,
-      end: this.datepipe.transform(this.selectedDate2, 'yyyy-MM-dd')!,
+      startTime: this.datepipe.transform(this.selectedDate1, 'yyyy-MM-dd')!,
+      endTime: this.datepipe.transform(this.selectedDate2, 'yyyy-MM-dd')!,
       owner: this.userInfo.value.username,
       target: this.selectedItem?.id,
     }
@@ -190,18 +190,18 @@ export class AppComponent implements OnInit {
 
   selectReservationForEdit(id?: number): void {
     this.selectedEditReservation = this.myReservations.find(x => x.id == id);
-    if (this.selectedEditReservation?.start == undefined || this.selectedEditReservation?.end == undefined) {
+    if (this.selectedEditReservation?.startTime == undefined || this.selectedEditReservation?.endTime == undefined) {
       return;
     }
-    this.editDate1 = new Date(this.selectedEditReservation?.start);
-    this.editDate2 = new Date(this.selectedEditReservation?.end);
+    this.editDate1 = new Date(this.selectedEditReservation?.startTime);
+    this.editDate2 = new Date(this.selectedEditReservation?.endTime);
   }
   onEditReserve() {
-    if (this.selectedEditReservation?.start == undefined || this.selectedEditReservation?.end == undefined || this.selectedEditReservation?.id == undefined) {
+    if (this.selectedEditReservation?.startTime == undefined || this.selectedEditReservation?.endTime == undefined || this.selectedEditReservation?.id == undefined) {
       return;
     }
-    this.selectedEditReservation.start = this.datepipe.transform(this.editDate1, 'yyyy-MM-dd')!
-    this.selectedEditReservation.end = this.datepipe.transform(this.editDate2, 'yyyy-MM-dd')!
+    this.selectedEditReservation.startTime = this.datepipe.transform(this.editDate1, 'yyyy-MM-dd')!
+    this.selectedEditReservation.endTime = this.datepipe.transform(this.editDate2, 'yyyy-MM-dd')!
 
     this.reservationService.apiReservationsIdPut({ id: this.selectedEditReservation.id, body: this.selectedEditReservation }).subscribe((response) => {
       console.log(response);
@@ -223,9 +223,11 @@ export class AppComponent implements OnInit {
 
   onEditUser({ value, valid }: { value: UserDto, valid: boolean }) {
     console.log(value, valid);
-    this.userService.apiUsersUsernamePut$Json({ username: this.myUser.userName, body: value }).subscribe((response) => {
-      console.log(response);
-    });
+    if (this.myUser.userName) {
+      this.userService.apiUsersUsernamePut$Json({ username: this.myUser.userName, body: value }).subscribe((response) => {
+        console.log(response);
+      });
+    }
   }
 
   reload(): void {

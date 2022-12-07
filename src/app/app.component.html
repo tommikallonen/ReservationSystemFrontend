@@ -57,8 +57,8 @@
           <tr *ngFor="let reservation of itemReservations">
             <td>{{reservation.id}}</td>
             <td>{{reservation.target}}</td>
-            <td>{{reservation.start}}</td>
-            <td>{{reservation.end}}</td>
+            <td>{{reservation.startTime}}</td>
+            <td>{{reservation.endTime}}</td>
           </tr>
         </table>
       </div>
@@ -127,8 +127,8 @@
           <tr *ngFor="let reservation of myReservations">
             <td>{{reservation.id}}</td>
             <td>{{reservation.target}}</td>
-            <td>{{reservation.start}}</td>
-            <td>{{reservation.end}}</td>
+            <td>{{reservation.startTime}}</td>
+            <td>{{reservation.endTime}}</td>
             <td><button (click)="selectReservationForEdit(reservation.id)">Muokkaa</button></td>
             <td><button (click)="deleteReservation(reservation.id)">Poista</button></td>
           </tr>

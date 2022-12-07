@@ -1,3 +1,5 @@
+export { Image } from './models/image';
+export { ImageDto } from './models/image-dto';
 export { Item } from './models/item';
 export { ItemDto } from './models/item-dto';
 export { ProblemDetails } from './models/problem-details';

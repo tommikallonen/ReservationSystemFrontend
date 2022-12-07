@@ -3,9 +3,9 @@
 import { Item } from './item';
 import { User } from './user';
 export interface Reservation {
-  end?: string;
+  endTime?: string;
   id?: number;
   owner?: User;
-  start?: string;
+  startTime?: string;
   target?: Item;
 }

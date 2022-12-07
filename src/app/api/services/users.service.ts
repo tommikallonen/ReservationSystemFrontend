@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpContext } from '@angular/common/http';
 import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
@@ -29,17 +29,15 @@ export class UsersService extends BaseService {
   static readonly ApiUsersGetPath = '/api/Users';
 
   /**
-   * Gets a list of all users.
-   *
-   *
-   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `apiUsersGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiUsersGet$Plain$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<UserDto>>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<UserDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsersService.ApiUsersGetPath, 'get');
     if (params) {
@@ -47,7 +45,8 @@ export class UsersService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: 'text/plain',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -57,17 +56,15 @@ export class UsersService extends BaseService {
   }
 
   /**
-   * Gets a list of all users.
-   *
-   *
-   *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `apiUsersGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiUsersGet$Plain(params?: {
-  }): Observable<Array<UserDto>> {
+    context?: HttpContext
+  }
+): Observable<Array<UserDto>> {
 
     return this.apiUsersGet$Plain$Response(params).pipe(
       map((r: StrictHttpResponse<Array<UserDto>>) => r.body as Array<UserDto>)
@@ -75,17 +72,15 @@ export class UsersService extends BaseService {
   }
 
   /**
-   * Gets a list of all users.
-   *
-   *
-   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `apiUsersGet$Json()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiUsersGet$Json$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<UserDto>>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<UserDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsersService.ApiUsersGetPath, 'get');
     if (params) {
@@ -93,7 +88,8 @@ export class UsersService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'text/json'
+      accept: 'text/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -103,17 +99,15 @@ export class UsersService extends BaseService {
   }
 
   /**
-   * Gets a list of all users.
-   *
-   *
-   *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `apiUsersGet$Json$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiUsersGet$Json(params?: {
-  }): Observable<Array<UserDto>> {
+    context?: HttpContext
+  }
+): Observable<Array<UserDto>> {
 
     return this.apiUsersGet$Json$Response(params).pipe(
       map((r: StrictHttpResponse<Array<UserDto>>) => r.body as Array<UserDto>)
@@ -136,12 +130,14 @@ export class UsersService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiUsersPost$Plain$Response(params?: {
+    context?: HttpContext
 
     /**
      * User information
      */
     body?: User
-  }): Observable<StrictHttpResponse<UserDto>> {
+  }
+): Observable<StrictHttpResponse<UserDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsersService.ApiUsersPostPath, 'post');
     if (params) {
@@ -150,7 +146,8 @@ export class UsersService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: 'text/plain',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -170,12 +167,14 @@ export class UsersService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiUsersPost$Plain(params?: {
+    context?: HttpContext
 
     /**
      * User information
      */
     body?: User
-  }): Observable<UserDto> {
+  }
+): Observable<UserDto> {
 
     return this.apiUsersPost$Plain$Response(params).pipe(
       map((r: StrictHttpResponse<UserDto>) => r.body as UserDto)
@@ -193,12 +192,14 @@ export class UsersService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiUsersPost$Json$Response(params?: {
+    context?: HttpContext
 
     /**
      * User information
      */
     body?: User
-  }): Observable<StrictHttpResponse<UserDto>> {
+  }
+): Observable<StrictHttpResponse<UserDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsersService.ApiUsersPostPath, 'post');
     if (params) {
@@ -207,7 +208,8 @@ export class UsersService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'text/json'
+      accept: 'text/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -227,12 +229,14 @@ export class UsersService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiUsersPost$Json(params?: {
+    context?: HttpContext
 
     /**
      * User information
      */
     body?: User
-  }): Observable<UserDto> {
+  }
+): Observable<UserDto> {
 
     return this.apiUsersPost$Json$Response(params).pipe(
       map((r: StrictHttpResponse<UserDto>) => r.body as UserDto)
@@ -260,7 +264,9 @@ export class UsersService extends BaseService {
      * user id
      */
     id: number;
-  }): Observable<StrictHttpResponse<UserDto>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<UserDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsersService.ApiUsersIdGetPath, 'get');
     if (params) {
@@ -269,7 +275,8 @@ export class UsersService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'application/json'
+      accept: 'application/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -294,7 +301,9 @@ export class UsersService extends BaseService {
      * user id
      */
     id: number;
-  }): Observable<UserDto> {
+    context?: HttpContext
+  }
+): Observable<UserDto> {
 
     return this.apiUsersIdGet$Response(params).pipe(
       map((r: StrictHttpResponse<UserDto>) => r.body as UserDto)
@@ -322,7 +331,9 @@ export class UsersService extends BaseService {
      * Id of user to be deleted
      */
     id: number;
-  }): Observable<StrictHttpResponse<void>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<void>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsersService.ApiUsersIdDeletePath, 'delete');
     if (params) {
@@ -331,7 +342,8 @@ export class UsersService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: '*/*'
+      accept: '*/*',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -356,7 +368,9 @@ export class UsersService extends BaseService {
      * Id of user to be deleted
      */
     id: number;
-  }): Observable<void> {
+    context?: HttpContext
+  }
+): Observable<void> {
 
     return this.apiUsersIdDelete$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
@@ -376,7 +390,9 @@ export class UsersService extends BaseService {
    */
   apiUsersUsernameGet$Response(params: {
     username: string;
-  }): Observable<StrictHttpResponse<UserDto>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<UserDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsersService.ApiUsersUsernameGetPath, 'get');
     if (params) {
@@ -385,7 +401,8 @@ export class UsersService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'application/json'
+      accept: 'application/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -402,7 +419,9 @@ export class UsersService extends BaseService {
    */
   apiUsersUsernameGet(params: {
     username: string;
-  }): Observable<UserDto> {
+    context?: HttpContext
+  }
+): Observable<UserDto> {
 
     return this.apiUsersUsernameGet$Response(params).pipe(
       map((r: StrictHttpResponse<UserDto>) => r.body as UserDto)
@@ -426,12 +445,14 @@ export class UsersService extends BaseService {
    */
   apiUsersUsernamePut$Plain$Response(params: {
     username: string;
+    context?: HttpContext
 
     /**
      * User's new information
      */
-    body?: UserDto
-  }): Observable<StrictHttpResponse<UserDto>> {
+    body?: User
+  }
+): Observable<StrictHttpResponse<UserDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsersService.ApiUsersUsernamePutPath, 'put');
     if (params) {
@@ -441,7 +462,8 @@ export class UsersService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: 'text/plain',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -462,12 +484,14 @@ export class UsersService extends BaseService {
    */
   apiUsersUsernamePut$Plain(params: {
     username: string;
+    context?: HttpContext
 
     /**
      * User's new information
      */
-    body?: UserDto
-  }): Observable<UserDto> {
+    body?: User
+  }
+): Observable<UserDto> {
 
     return this.apiUsersUsernamePut$Plain$Response(params).pipe(
       map((r: StrictHttpResponse<UserDto>) => r.body as UserDto)
@@ -486,12 +510,14 @@ export class UsersService extends BaseService {
    */
   apiUsersUsernamePut$Json$Response(params: {
     username: string;
+    context?: HttpContext
 
     /**
      * User's new information
      */
-    body?: UserDto
-  }): Observable<StrictHttpResponse<UserDto>> {
+    body?: User
+  }
+): Observable<StrictHttpResponse<UserDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, UsersService.ApiUsersUsernamePutPath, 'put');
     if (params) {
@@ -501,7 +527,8 @@ export class UsersService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'text/json'
+      accept: 'text/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -522,12 +549,14 @@ export class UsersService extends BaseService {
    */
   apiUsersUsernamePut$Json(params: {
     username: string;
+    context?: HttpContext
 
     /**
      * User's new information
      */
-    body?: UserDto
-  }): Observable<UserDto> {
+    body?: User
+  }
+): Observable<UserDto> {
 
     return this.apiUsersUsernamePut$Json$Response(params).pipe(
       map((r: StrictHttpResponse<UserDto>) => r.body as UserDto)

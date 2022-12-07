@@ -3,9 +3,10 @@
 export interface User {
   firstName?: null | string;
   id?: number;
-  isAdmin?: boolean;
+  joinDate?: string;
   lastName?: null | string;
-  password: string;
+  loginDate?: string;
+  password?: null | string;
   salt?: null | string;
-  userName: string;
+  userName?: null | string;
 }

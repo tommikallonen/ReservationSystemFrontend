@@ -2,7 +2,8 @@
 /* eslint-disable */
 export interface UserDto {
   firstName?: null | string;
-  isAdmin?: boolean;
+  joinDate?: string;
   lastName?: null | string;
-  userName: string;
+  loginDate?: string;
+  userName?: null | string;
 }

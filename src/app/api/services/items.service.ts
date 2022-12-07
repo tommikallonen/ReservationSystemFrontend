@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpContext } from '@angular/common/http';
 import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
@@ -9,7 +9,6 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { Item } from '../models/item';
 import { ItemDto } from '../models/item-dto';
 
 @Injectable({
@@ -29,13 +28,19 @@ export class ItemsService extends BaseService {
   static readonly ApiItemsGetPath = '/api/Items';
 
   /**
+   * Gets all the items in the system.
+   *
+   *
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `apiItemsGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiItemsGet$Plain$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<ItemDto>>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ItemDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsGetPath, 'get');
     if (params) {
@@ -43,7 +48,8 @@ export class ItemsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: 'text/plain',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -53,13 +59,19 @@ export class ItemsService extends BaseService {
   }
 
   /**
+   * Gets all the items in the system.
+   *
+   *
+   *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `apiItemsGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiItemsGet$Plain(params?: {
-  }): Observable<Array<ItemDto>> {
+    context?: HttpContext
+  }
+): Observable<Array<ItemDto>> {
 
     return this.apiItemsGet$Plain$Response(params).pipe(
       map((r: StrictHttpResponse<Array<ItemDto>>) => r.body as Array<ItemDto>)
@@ -67,13 +79,19 @@ export class ItemsService extends BaseService {
   }
 
   /**
+   * Gets all the items in the system.
+   *
+   *
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `apiItemsGet$Json()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiItemsGet$Json$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<ItemDto>>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ItemDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsGetPath, 'get');
     if (params) {
@@ -81,7 +99,8 @@ export class ItemsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'text/json'
+      accept: 'text/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -91,13 +110,19 @@ export class ItemsService extends BaseService {
   }
 
   /**
+   * Gets all the items in the system.
+   *
+   *
+   *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `apiItemsGet$Json$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiItemsGet$Json(params?: {
-  }): Observable<Array<ItemDto>> {
+    context?: HttpContext
+  }
+): Observable<Array<ItemDto>> {
 
     return this.apiItemsGet$Json$Response(params).pipe(
       map((r: StrictHttpResponse<Array<ItemDto>>) => r.body as Array<ItemDto>)
@@ -116,8 +141,10 @@ export class ItemsService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiItemsPost$Plain$Response(params?: {
+    context?: HttpContext
     body?: ItemDto
-  }): Observable<StrictHttpResponse<Item>> {
+  }
+): Observable<StrictHttpResponse<ItemDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsPostPath, 'post');
     if (params) {
@@ -126,11 +153,12 @@ export class ItemsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: 'text/plain',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Item>;
+        return r as StrictHttpResponse<ItemDto>;
       })
     );
   }
@@ -142,11 +170,13 @@ export class ItemsService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiItemsPost$Plain(params?: {
+    context?: HttpContext
     body?: ItemDto
-  }): Observable<Item> {
+  }
+): Observable<ItemDto> {
 
     return this.apiItemsPost$Plain$Response(params).pipe(
-      map((r: StrictHttpResponse<Item>) => r.body as Item)
+      map((r: StrictHttpResponse<ItemDto>) => r.body as ItemDto)
     );
   }
 
@@ -157,8 +187,10 @@ export class ItemsService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiItemsPost$Json$Response(params?: {
+    context?: HttpContext
     body?: ItemDto
-  }): Observable<StrictHttpResponse<Item>> {
+  }
+): Observable<StrictHttpResponse<ItemDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsPostPath, 'post');
     if (params) {
@@ -167,11 +199,12 @@ export class ItemsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'text/json'
+      accept: 'text/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Item>;
+        return r as StrictHttpResponse<ItemDto>;
       })
     );
   }
@@ -183,185 +216,13 @@ export class ItemsService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiItemsPost$Json(params?: {
+    context?: HttpContext
     body?: ItemDto
-  }): Observable<Item> {
+  }
+): Observable<ItemDto> {
 
     return this.apiItemsPost$Json$Response(params).pipe(
-      map((r: StrictHttpResponse<Item>) => r.body as Item)
-    );
-  }
-
-  /**
-   * Path part for operation apiItemsUserUsernameGet
-   */
-  static readonly ApiItemsUserUsernameGetPath = '/api/Items/user/{username}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiItemsUserUsernameGet$Plain()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiItemsUserUsernameGet$Plain$Response(params: {
-    username: string;
-  }): Observable<StrictHttpResponse<Array<ItemDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsUserUsernameGetPath, 'get');
-    if (params) {
-      rb.path('username', params.username, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'text',
-      accept: 'text/plain'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<ItemDto>>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiItemsUserUsernameGet$Plain$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiItemsUserUsernameGet$Plain(params: {
-    username: string;
-  }): Observable<Array<ItemDto>> {
-
-    return this.apiItemsUserUsernameGet$Plain$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<ItemDto>>) => r.body as Array<ItemDto>)
-    );
-  }
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiItemsUserUsernameGet$Json()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiItemsUserUsernameGet$Json$Response(params: {
-    username: string;
-  }): Observable<StrictHttpResponse<Array<ItemDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsUserUsernameGetPath, 'get');
-    if (params) {
-      rb.path('username', params.username, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'text/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<ItemDto>>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiItemsUserUsernameGet$Json$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiItemsUserUsernameGet$Json(params: {
-    username: string;
-  }): Observable<Array<ItemDto>> {
-
-    return this.apiItemsUserUsernameGet$Json$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<ItemDto>>) => r.body as Array<ItemDto>)
-    );
-  }
-
-  /**
-   * Path part for operation apiItemsQueryGet
-   */
-  static readonly ApiItemsQueryGetPath = '/api/Items/{query}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiItemsQueryGet$Plain()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiItemsQueryGet$Plain$Response(params: {
-    query: string;
-  }): Observable<StrictHttpResponse<Array<ItemDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsQueryGetPath, 'get');
-    if (params) {
-      rb.path('query', params.query, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'text',
-      accept: 'text/plain'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<ItemDto>>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiItemsQueryGet$Plain$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiItemsQueryGet$Plain(params: {
-    query: string;
-  }): Observable<Array<ItemDto>> {
-
-    return this.apiItemsQueryGet$Plain$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<ItemDto>>) => r.body as Array<ItemDto>)
-    );
-  }
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiItemsQueryGet$Json()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiItemsQueryGet$Json$Response(params: {
-    query: string;
-  }): Observable<StrictHttpResponse<Array<ItemDto>>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsQueryGetPath, 'get');
-    if (params) {
-      rb.path('query', params.query, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'text/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Array<ItemDto>>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiItemsQueryGet$Json$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiItemsQueryGet$Json(params: {
-    query: string;
-  }): Observable<Array<ItemDto>> {
-
-    return this.apiItemsQueryGet$Json$Response(params).pipe(
-      map((r: StrictHttpResponse<Array<ItemDto>>) => r.body as Array<ItemDto>)
+      map((r: StrictHttpResponse<ItemDto>) => r.body as ItemDto)
     );
   }
 
@@ -371,14 +232,24 @@ export class ItemsService extends BaseService {
   static readonly ApiItemsIdGetPath = '/api/Items/{id}';
 
   /**
+   * Gets a single item based on id.
+   *
+   *
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `apiItemsIdGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiItemsIdGet$Plain$Response(params: {
+
+    /**
+     * Item id
+     */
     id: number;
-  }): Observable<StrictHttpResponse<ItemDto>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<ItemDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsIdGetPath, 'get');
     if (params) {
@@ -387,7 +258,8 @@ export class ItemsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: 'text/plain',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -397,14 +269,24 @@ export class ItemsService extends BaseService {
   }
 
   /**
+   * Gets a single item based on id.
+   *
+   *
+   *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `apiItemsIdGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiItemsIdGet$Plain(params: {
+
+    /**
+     * Item id
+     */
     id: number;
-  }): Observable<ItemDto> {
+    context?: HttpContext
+  }
+): Observable<ItemDto> {
 
     return this.apiItemsIdGet$Plain$Response(params).pipe(
       map((r: StrictHttpResponse<ItemDto>) => r.body as ItemDto)
@@ -412,14 +294,24 @@ export class ItemsService extends BaseService {
   }
 
   /**
+   * Gets a single item based on id.
+   *
+   *
+   *
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `apiItemsIdGet$Json()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiItemsIdGet$Json$Response(params: {
+
+    /**
+     * Item id
+     */
     id: number;
-  }): Observable<StrictHttpResponse<ItemDto>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<ItemDto>> {
 
     const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsIdGetPath, 'get');
     if (params) {
@@ -428,7 +320,8 @@ export class ItemsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'text/json'
+      accept: 'text/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -438,14 +331,24 @@ export class ItemsService extends BaseService {
   }
 
   /**
+   * Gets a single item based on id.
+   *
+   *
+   *
    * This method provides access to only to the response body.
    * To access the full response (for headers, for example), `apiItemsIdGet$Json$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
   apiItemsIdGet$Json(params: {
+
+    /**
+     * Item id
+     */
     id: number;
-  }): Observable<ItemDto> {
+    context?: HttpContext
+  }
+): Observable<ItemDto> {
 
     return this.apiItemsIdGet$Json$Response(params).pipe(
       map((r: StrictHttpResponse<ItemDto>) => r.body as ItemDto)
@@ -465,8 +368,10 @@ export class ItemsService extends BaseService {
    */
   apiItemsIdPut$Response(params: {
     id: number;
+    context?: HttpContext
     body?: ItemDto
-  }): Observable<StrictHttpResponse<void>> {
+  }
+): Observable<StrictHttpResponse<void>> {
 
     const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsIdPutPath, 'put');
     if (params) {
@@ -476,7 +381,8 @@ export class ItemsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: '*/*'
+      accept: '*/*',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -493,8 +399,10 @@ export class ItemsService extends BaseService {
    */
   apiItemsIdPut(params: {
     id: number;
+    context?: HttpContext
     body?: ItemDto
-  }): Observable<void> {
+  }
+): Observable<void> {
 
     return this.apiItemsIdPut$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
@@ -508,13 +416,15 @@ export class ItemsService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiItemsIdDelete$Plain()` instead.
+   * To access only the response body, use `apiItemsIdDelete()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiItemsIdDelete$Plain$Response(params: {
+  apiItemsIdDelete$Response(params: {
     id: number;
-  }): Observable<StrictHttpResponse<Item>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<void>> {
 
     const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsIdDeletePath, 'delete');
     if (params) {
@@ -523,68 +433,30 @@ export class ItemsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: '*/*',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Item>;
+        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
       })
     );
   }
 
   /**
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiItemsIdDelete$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `apiItemsIdDelete$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiItemsIdDelete$Plain(params: {
+  apiItemsIdDelete(params: {
     id: number;
-  }): Observable<Item> {
-
-    return this.apiItemsIdDelete$Plain$Response(params).pipe(
-      map((r: StrictHttpResponse<Item>) => r.body as Item)
-    );
+    context?: HttpContext
   }
+): Observable<void> {
 
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiItemsIdDelete$Json()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiItemsIdDelete$Json$Response(params: {
-    id: number;
-  }): Observable<StrictHttpResponse<Item>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsIdDeletePath, 'delete');
-    if (params) {
-      rb.path('id', params.id, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'text/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Item>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiItemsIdDelete$Json$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiItemsIdDelete$Json(params: {
-    id: number;
-  }): Observable<Item> {
-
-    return this.apiItemsIdDelete$Json$Response(params).pipe(
-      map((r: StrictHttpResponse<Item>) => r.body as Item)
+    return this.apiItemsIdDelete$Response(params).pipe(
+      map((r: StrictHttpResponse<void>) => r.body as void)
     );
   }
 

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpContext } from '@angular/common/http';
 import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
@@ -35,7 +35,9 @@ export class ReservationsService extends BaseService {
    * This method doesn't expect any request body.
    */
   apiReservationsGet$Plain$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<ReservationDto>>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ReservationDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsGetPath, 'get');
     if (params) {
@@ -43,7 +45,8 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: 'text/plain',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -59,7 +62,9 @@ export class ReservationsService extends BaseService {
    * This method doesn't expect any request body.
    */
   apiReservationsGet$Plain(params?: {
-  }): Observable<Array<ReservationDto>> {
+    context?: HttpContext
+  }
+): Observable<Array<ReservationDto>> {
 
     return this.apiReservationsGet$Plain$Response(params).pipe(
       map((r: StrictHttpResponse<Array<ReservationDto>>) => r.body as Array<ReservationDto>)
@@ -73,7 +78,9 @@ export class ReservationsService extends BaseService {
    * This method doesn't expect any request body.
    */
   apiReservationsGet$Json$Response(params?: {
-  }): Observable<StrictHttpResponse<Array<ReservationDto>>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ReservationDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsGetPath, 'get');
     if (params) {
@@ -81,7 +88,8 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'text/json'
+      accept: 'text/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -97,7 +105,9 @@ export class ReservationsService extends BaseService {
    * This method doesn't expect any request body.
    */
   apiReservationsGet$Json(params?: {
-  }): Observable<Array<ReservationDto>> {
+    context?: HttpContext
+  }
+): Observable<Array<ReservationDto>> {
 
     return this.apiReservationsGet$Json$Response(params).pipe(
       map((r: StrictHttpResponse<Array<ReservationDto>>) => r.body as Array<ReservationDto>)
@@ -116,8 +126,10 @@ export class ReservationsService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiReservationsPost$Plain$Response(params?: {
+    context?: HttpContext
     body?: ReservationDto
-  }): Observable<StrictHttpResponse<ReservationDto>> {
+  }
+): Observable<StrictHttpResponse<Reservation>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsPostPath, 'post');
     if (params) {
@@ -126,11 +138,12 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: 'text/plain',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ReservationDto>;
+        return r as StrictHttpResponse<Reservation>;
       })
     );
   }
@@ -142,11 +155,13 @@ export class ReservationsService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiReservationsPost$Plain(params?: {
+    context?: HttpContext
     body?: ReservationDto
-  }): Observable<ReservationDto> {
+  }
+): Observable<Reservation> {
 
     return this.apiReservationsPost$Plain$Response(params).pipe(
-      map((r: StrictHttpResponse<ReservationDto>) => r.body as ReservationDto)
+      map((r: StrictHttpResponse<Reservation>) => r.body as Reservation)
     );
   }
 
@@ -157,8 +172,10 @@ export class ReservationsService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiReservationsPost$Json$Response(params?: {
+    context?: HttpContext
     body?: ReservationDto
-  }): Observable<StrictHttpResponse<ReservationDto>> {
+  }
+): Observable<StrictHttpResponse<Reservation>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsPostPath, 'post');
     if (params) {
@@ -167,11 +184,12 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'text/json'
+      accept: 'text/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ReservationDto>;
+        return r as StrictHttpResponse<Reservation>;
       })
     );
   }
@@ -183,11 +201,13 @@ export class ReservationsService extends BaseService {
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
   apiReservationsPost$Json(params?: {
+    context?: HttpContext
     body?: ReservationDto
-  }): Observable<ReservationDto> {
+  }
+): Observable<Reservation> {
 
     return this.apiReservationsPost$Json$Response(params).pipe(
-      map((r: StrictHttpResponse<ReservationDto>) => r.body as ReservationDto)
+      map((r: StrictHttpResponse<Reservation>) => r.body as Reservation)
     );
   }
 
@@ -204,7 +224,9 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsUserUsernameGet$Plain$Response(params: {
     username: string;
-  }): Observable<StrictHttpResponse<Array<ReservationDto>>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ReservationDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsUserUsernameGetPath, 'get');
     if (params) {
@@ -213,7 +235,8 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: 'text/plain',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -230,7 +253,9 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsUserUsernameGet$Plain(params: {
     username: string;
-  }): Observable<Array<ReservationDto>> {
+    context?: HttpContext
+  }
+): Observable<Array<ReservationDto>> {
 
     return this.apiReservationsUserUsernameGet$Plain$Response(params).pipe(
       map((r: StrictHttpResponse<Array<ReservationDto>>) => r.body as Array<ReservationDto>)
@@ -245,7 +270,9 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsUserUsernameGet$Json$Response(params: {
     username: string;
-  }): Observable<StrictHttpResponse<Array<ReservationDto>>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ReservationDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsUserUsernameGetPath, 'get');
     if (params) {
@@ -254,7 +281,8 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'text/json'
+      accept: 'text/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -271,7 +299,9 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsUserUsernameGet$Json(params: {
     username: string;
-  }): Observable<Array<ReservationDto>> {
+    context?: HttpContext
+  }
+): Observable<Array<ReservationDto>> {
 
     return this.apiReservationsUserUsernameGet$Json$Response(params).pipe(
       map((r: StrictHttpResponse<Array<ReservationDto>>) => r.body as Array<ReservationDto>)
@@ -291,7 +321,9 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsItemIdGet$Plain$Response(params: {
     id: number;
-  }): Observable<StrictHttpResponse<Array<ReservationDto>>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ReservationDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsItemIdGetPath, 'get');
     if (params) {
@@ -300,7 +332,8 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: 'text/plain',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -317,7 +350,9 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsItemIdGet$Plain(params: {
     id: number;
-  }): Observable<Array<ReservationDto>> {
+    context?: HttpContext
+  }
+): Observable<Array<ReservationDto>> {
 
     return this.apiReservationsItemIdGet$Plain$Response(params).pipe(
       map((r: StrictHttpResponse<Array<ReservationDto>>) => r.body as Array<ReservationDto>)
@@ -332,7 +367,9 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsItemIdGet$Json$Response(params: {
     id: number;
-  }): Observable<StrictHttpResponse<Array<ReservationDto>>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ReservationDto>>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsItemIdGetPath, 'get');
     if (params) {
@@ -341,7 +378,8 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'text/json'
+      accept: 'text/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -358,7 +396,9 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsItemIdGet$Json(params: {
     id: number;
-  }): Observable<Array<ReservationDto>> {
+    context?: HttpContext
+  }
+): Observable<Array<ReservationDto>> {
 
     return this.apiReservationsItemIdGet$Json$Response(params).pipe(
       map((r: StrictHttpResponse<Array<ReservationDto>>) => r.body as Array<ReservationDto>)
@@ -378,7 +418,9 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsIdGet$Plain$Response(params: {
     id: number;
-  }): Observable<StrictHttpResponse<ReservationDto>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Reservation>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsIdGetPath, 'get');
     if (params) {
@@ -387,11 +429,12 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: 'text/plain',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ReservationDto>;
+        return r as StrictHttpResponse<Reservation>;
       })
     );
   }
@@ -404,10 +447,12 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsIdGet$Plain(params: {
     id: number;
-  }): Observable<ReservationDto> {
+    context?: HttpContext
+  }
+): Observable<Reservation> {
 
     return this.apiReservationsIdGet$Plain$Response(params).pipe(
-      map((r: StrictHttpResponse<ReservationDto>) => r.body as ReservationDto)
+      map((r: StrictHttpResponse<Reservation>) => r.body as Reservation)
     );
   }
 
@@ -419,7 +464,9 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsIdGet$Json$Response(params: {
     id: number;
-  }): Observable<StrictHttpResponse<ReservationDto>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Reservation>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsIdGetPath, 'get');
     if (params) {
@@ -428,11 +475,12 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'json',
-      accept: 'text/json'
+      accept: 'text/json',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<ReservationDto>;
+        return r as StrictHttpResponse<Reservation>;
       })
     );
   }
@@ -445,10 +493,12 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsIdGet$Json(params: {
     id: number;
-  }): Observable<ReservationDto> {
+    context?: HttpContext
+  }
+): Observable<Reservation> {
 
     return this.apiReservationsIdGet$Json$Response(params).pipe(
-      map((r: StrictHttpResponse<ReservationDto>) => r.body as ReservationDto)
+      map((r: StrictHttpResponse<Reservation>) => r.body as Reservation)
     );
   }
 
@@ -465,8 +515,10 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsIdPut$Response(params: {
     id: number;
+    context?: HttpContext
     body?: ReservationDto
-  }): Observable<StrictHttpResponse<void>> {
+  }
+): Observable<StrictHttpResponse<void>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsIdPutPath, 'put');
     if (params) {
@@ -476,7 +528,8 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: '*/*'
+      accept: '*/*',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
@@ -493,8 +546,10 @@ export class ReservationsService extends BaseService {
    */
   apiReservationsIdPut(params: {
     id: number;
+    context?: HttpContext
     body?: ReservationDto
-  }): Observable<void> {
+  }
+): Observable<void> {
 
     return this.apiReservationsIdPut$Response(params).pipe(
       map((r: StrictHttpResponse<void>) => r.body as void)
@@ -508,13 +563,15 @@ export class ReservationsService extends BaseService {
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiReservationsIdDelete$Plain()` instead.
+   * To access only the response body, use `apiReservationsIdDelete()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiReservationsIdDelete$Plain$Response(params: {
+  apiReservationsIdDelete$Response(params: {
     id: number;
-  }): Observable<StrictHttpResponse<Reservation>> {
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<void>> {
 
     const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsIdDeletePath, 'delete');
     if (params) {
@@ -523,68 +580,30 @@ export class ReservationsService extends BaseService {
 
     return this.http.request(rb.build({
       responseType: 'text',
-      accept: 'text/plain'
+      accept: '*/*',
+      context: params?.context
     })).pipe(
       filter((r: any) => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Reservation>;
+        return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
       })
     );
   }
 
   /**
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiReservationsIdDelete$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `apiReservationsIdDelete$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiReservationsIdDelete$Plain(params: {
+  apiReservationsIdDelete(params: {
     id: number;
-  }): Observable<Reservation> {
-
-    return this.apiReservationsIdDelete$Plain$Response(params).pipe(
-      map((r: StrictHttpResponse<Reservation>) => r.body as Reservation)
-    );
+    context?: HttpContext
   }
+): Observable<void> {
 
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiReservationsIdDelete$Json()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiReservationsIdDelete$Json$Response(params: {
-    id: number;
-  }): Observable<StrictHttpResponse<Reservation>> {
-
-    const rb = new RequestBuilder(this.rootUrl, ReservationsService.ApiReservationsIdDeletePath, 'delete');
-    if (params) {
-      rb.path('id', params.id, {});
-    }
-
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'text/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<Reservation>;
-      })
-    );
-  }
-
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiReservationsIdDelete$Json$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiReservationsIdDelete$Json(params: {
-    id: number;
-  }): Observable<Reservation> {
-
-    return this.apiReservationsIdDelete$Json$Response(params).pipe(
-      map((r: StrictHttpResponse<Reservation>) => r.body as Reservation)
+    return this.apiReservationsIdDelete$Response(params).pipe(
+      map((r: StrictHttpResponse<void>) => r.body as void)
     );
   }
 
