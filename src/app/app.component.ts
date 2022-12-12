@@ -60,14 +60,12 @@ export class AppComponent implements OnInit {
       userName: new FormControl(''),
       firstName: new FormControl(''),
       lastName: new FormControl(''),
-      password: new FormControl(''),
-      isAdmin: new FormControl(false)
+      password: new FormControl('')
     })
     this.editUser = new FormGroup({
       userName: new FormControl(''),
       firstName: new FormControl(''),
-      lastName: new FormControl(''),
-      isAdmin: new FormControl(false)
+      lastName: new FormControl('')
     })
   }
   getItems(term?: string): void {
@@ -181,7 +179,7 @@ export class AppComponent implements OnInit {
       return;
     }
     if (confirm("Haluatko varmasti poistaa kohteen ")) {
-      this.itemService.apiItemsIdDelete$Json({ id: id }).subscribe((response) => {
+      this.itemService.apiItemsIdDelete({ id: id }).subscribe((response) => {
         console.log(response);
         this.reload();
       });
@@ -214,7 +212,7 @@ export class AppComponent implements OnInit {
       return;
     }
     if (confirm("Haluatko varmasti poistaa varauksen ")) {
-      this.reservationService.apiReservationsIdDelete$Json({ id: id }).subscribe((response) => {
+      this.reservationService.apiReservationsIdDelete({ id: id }).subscribe((response) => {
         console.log(response);
         this.reload();
       });

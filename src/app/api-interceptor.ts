@@ -13,7 +13,7 @@ export class ApiInterceptor implements HttpInterceptor {
         req = this.apiRequestConfiguration.apply(req);
         req = req.clone({
             setHeaders: {
-                'ApiKey': 'EIHYVAAPAIVAA'
+                'ApiKey': 'wgwGWRHAETJETUJAJHTETHWREHAJERHJATE'
             }
         });
 

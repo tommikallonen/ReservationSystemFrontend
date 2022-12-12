@@ -46,7 +46,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     NgxMaterialTimepickerModule.setLocale('fi-FI'),
     MatCardModule,
     MatTabsModule,
-    ApiModule.forRoot({ rootUrl: 'https://localhost:44338' }),
+    ApiModule.forRoot({ rootUrl: 'https://localhost:7094' }),
   ],
   bootstrap: [AppComponent]
 })

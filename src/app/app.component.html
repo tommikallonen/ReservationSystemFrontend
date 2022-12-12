@@ -182,10 +182,6 @@
             <span>Sukunimi</span>
             <input type="text" placeholder="Sukunimi" formControlName="lastName">
           </div>
-          <div>
-            <span>Admin?</span>
-            <input type="checkbox" formControlName="isAdmin">
-          </div>
           <button type="submit">Päivitä</button>
         </form>
       </div>
@@ -196,13 +192,11 @@
             <th>Tunnus</th>
             <th>Etunimi</th>
             <th>Sukunimi</th>
-            <th>Admin?</th>
           </tr>
           <tr *ngFor="let user of users">
             <td>{{user.userName}}</td>
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
-            <td>{{user.isAdmin}}</td>
           </tr>
         </table>
       </div>
@@ -224,10 +218,6 @@
           <div>
             <span>Salasana</span>
             <input type="password" placeholder="Salasana" formControlName="password">
-          </div>
-          <div>
-            <span>Admin?</span>
-            <input type="checkbox" formControlName="isAdmin">
           </div>
           <button type="submit">Tallenna</button>
         </form>

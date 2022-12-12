@@ -227,6 +227,200 @@ export class ItemsService extends BaseService {
   }
 
   /**
+   * Path part for operation apiItemsUserUsernameGet
+   */
+  static readonly ApiItemsUserUsernameGetPath = '/api/Items/user/{username}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiItemsUserUsernameGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiItemsUserUsernameGet$Plain$Response(params: {
+    username: string;
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ItemDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsUserUsernameGetPath, 'get');
+    if (params) {
+      rb.path('username', params.username, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'text',
+      accept: 'text/plain',
+      context: params?.context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<ItemDto>>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `apiItemsUserUsernameGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiItemsUserUsernameGet$Plain(params: {
+    username: string;
+    context?: HttpContext
+  }
+): Observable<Array<ItemDto>> {
+
+    return this.apiItemsUserUsernameGet$Plain$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<ItemDto>>) => r.body as Array<ItemDto>)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiItemsUserUsernameGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiItemsUserUsernameGet$Json$Response(params: {
+    username: string;
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ItemDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsUserUsernameGetPath, 'get');
+    if (params) {
+      rb.path('username', params.username, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'text/json',
+      context: params?.context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<ItemDto>>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `apiItemsUserUsernameGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiItemsUserUsernameGet$Json(params: {
+    username: string;
+    context?: HttpContext
+  }
+): Observable<Array<ItemDto>> {
+
+    return this.apiItemsUserUsernameGet$Json$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<ItemDto>>) => r.body as Array<ItemDto>)
+    );
+  }
+
+  /**
+   * Path part for operation apiItemsQueryGet
+   */
+  static readonly ApiItemsQueryGetPath = '/api/Items/{query}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiItemsQueryGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiItemsQueryGet$Plain$Response(params: {
+    query: string;
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ItemDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsQueryGetPath, 'get');
+    if (params) {
+      rb.path('query', params.query, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'text',
+      accept: 'text/plain',
+      context: params?.context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<ItemDto>>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `apiItemsQueryGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiItemsQueryGet$Plain(params: {
+    query: string;
+    context?: HttpContext
+  }
+): Observable<Array<ItemDto>> {
+
+    return this.apiItemsQueryGet$Plain$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<ItemDto>>) => r.body as Array<ItemDto>)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiItemsQueryGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiItemsQueryGet$Json$Response(params: {
+    query: string;
+    context?: HttpContext
+  }
+): Observable<StrictHttpResponse<Array<ItemDto>>> {
+
+    const rb = new RequestBuilder(this.rootUrl, ItemsService.ApiItemsQueryGetPath, 'get');
+    if (params) {
+      rb.path('query', params.query, {});
+    }
+
+    return this.http.request(rb.build({
+      responseType: 'json',
+      accept: 'text/json',
+      context: params?.context
+    })).pipe(
+      filter((r: any) => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<ItemDto>>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access to only to the response body.
+   * To access the full response (for headers, for example), `apiItemsQueryGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiItemsQueryGet$Json(params: {
+    query: string;
+    context?: HttpContext
+  }
+): Observable<Array<ItemDto>> {
+
+    return this.apiItemsQueryGet$Json$Response(params).pipe(
+      map((r: StrictHttpResponse<Array<ItemDto>>) => r.body as Array<ItemDto>)
+    );
+  }
+
+  /**
    * Path part for operation apiItemsIdGet
    */
   static readonly ApiItemsIdGetPath = '/api/Items/{id}';
